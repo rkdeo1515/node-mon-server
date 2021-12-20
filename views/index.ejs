@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MONITOR</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <div style="display: block; padding:10px;">
+      <h1>MONITORING (ID:<span id="id"></span>)</h1>
+    </div>
+    <div style="display: block; padding:10px;">
+      RSSI : <span id="rssi"></span>
+    </div>
+    <div style="display: block; padding:10px;">
+      온도 : <span id="temp"></span>
+    </div>
+    <div style="display: block; padding:10px;">
+      습도 : <span id="hum"></span>
+    </div>
+    <div style="display: block; padding:10px;">
+      <button type="button" onclick="getXHR()">REST_API</button>
+    </div>
+    <div style="display: block; padding:10px;">
+      <button type="button"  id="on" style="display: inline;" onclick="startMon()">START_MON</button>
+      <button type="button"  id="off" style="display: none;" onclick="stopMon()">STOP_MON</button>
+    </div><br/>
+
+    <p id="data"></p>
+    
+    <script>
+
+      var id = document.getElementById("id")
+      var temp = document.getElementById("temp")
+      var hum = document.getElementById("hum")
+      var ws_on = document.getElementById("on")
+      var ws_off = document.getElementById("off")
+
+      function getXHR(){
+        const xhttp = new XMLHttpRequest();
+        xhttp.onload = function() {
+          obj = JSON.parse(this.responseText);
+          console.log(obj)
+          id.innerHTML = obj.id
+          rssi.innerHTML = obj.rssi
+          temp.innerHTML = obj.temp
+          hum.innerHTML = obj.hum
+        }
+        xhttp.open("GET", "http://192.168.0.45:3000");
+        xhttp.send();
+      }
+
+      function startMon(){
+        loop = setInterval(getXHR, 2000);
+        ws_on.style.display = "none"
+        ws_off.style.display = "inline"
+      }
+
+      function stopMon() {
+        ws_off.style.display = "none"
+        ws_on.style.display = "inline"
+        clearInterval(loop) 
+      }
+
+    </script>
+  </body>
+</html>
