@@ -43,7 +43,7 @@
       var hum = document.getElementById("hum");
       var ws_on = document.getElementById("on");
       var ws_off = document.getElementById("off");
-
+      const API_SERVER_ADDR = "http://192.168.0.128:9000";
       function getXHR() {
         const xhttp = new XMLHttpRequest();
         xhttp.onload = function () {
@@ -54,7 +54,7 @@
           temp.innerHTML = obj.temp;
           hum.innerHTML = obj.hum;
         };
-        xhttp.open("GET", "http://192.168.0.128:9000");
+        xhttp.open("GET", API_SERVER_ADDR);
         xhttp.send();
       }
 
